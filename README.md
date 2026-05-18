@@ -1,6 +1,6 @@
-# Wind-Price Spread Arbitrage — DK1 & DK2 Nordic Power Markets
+# DK1/DK2 Wind-Price Decoupling Arbitrage Strategy
 
-**Markets:** DK1 (Denmark West) and DK2 (Denmark East) day-ahead electricity  
+**Markets:** DK1 (Denmark West) · DK2 (Denmark East) · Danish day-ahead electricity  
 **Period:** January 2019 – May 2026 · 64,500+ hourly observations · 6 market regimes  
 **Data:** ENTSO-E Transparency Platform · Energi Data Service (Energinet)  
 **Validation:** 9-fold rolling walk-forward · frozen holdout · DK2 cross-market test
@@ -44,7 +44,7 @@ The rolling window (not expanding) is important: α̂ shifts with market structu
 
 Beyond the base model, we estimate how α̂ varies with market conditions:
 
-$$P_t = \beta_0 + \alpha_0 \cdot W + \alpha_1 \cdot (W \times \text{penetration}_t) + \alpha_2 \cdot (W \times \text{price\_high}_t) + \varepsilon_t$$
+$$P_t = \beta_0 + \alpha_0 \cdot W + \alpha_1 \cdot (W \times \text{penetration}_t) + \alpha_2 \cdot (W \times \text{price\_{}high}_t) + \varepsilon_t$$
 
 This gives a continuous, real-time estimate of the merit-order coefficient as a function of how wind-saturated the grid is and how expensive gas is — rather than a fixed coefficient re-estimated every two years.
 
@@ -143,7 +143,13 @@ The HC signal is stronger on DK2 than DK1 with frozen DK1 parameters. DK2's prim
 
 ### Sharpe methodology note
 
-Two measures are reported. **Active-hour Sharpe** annualises using $\sqrt{8760 \times \%\text{active}}$ — the correct denominator for a strategy not always deployed. **All-hours Sharpe** multiplies by $\sqrt{\%\text{active}}$ to give a literature-comparable number. Using $\sqrt{8760}$ throughout would overstate the HC Sharpe by a factor of approximately 3.8× given 2.7% utilisation.
+Two measures are reported.
+
+**Active-hour Sharpe** annualises as `mean(pnl) / std(pnl) × √(8760 × %active)` — the correct denominator for a strategy not always deployed. For HC at 2.7% utilisation: √(8760 × 0.027) ≈ √237 ≈ 15.4.
+
+**All-hours Sharpe** = Active-hour Sharpe × √(%active), giving a literature-comparable number on the same basis as a fully-deployed strategy.
+
+Using √8760 throughout would overstate the HC Sharpe by approximately 3.8× — a common error in systematic strategy backtests.
 
 ---
 
@@ -171,6 +177,6 @@ Two measures are reported. **Active-hour Sharpe** annualises using $\sqrt{8760 \
 
 **Monte Carlo threshold optimisation.** The entry/exit thresholds (2.0/0.5) were set by convention. A sweep over entry ∈ [1.5, 3.0] and exit ∈ [0.0, 1.0] — optimised on training data only — would confirm whether these are genuinely optimal.
 
-**Three-zone coupled model.** Treat DK1, DK2, and Germany as a coupled system. The spread signal in DK1 depends on whether both the DK1-DE and DK2-SE interconnectors are congested simultaneously. Requires ENTSO-E cross-border flow permissions.
+**Three-zone coupled model.** Treat DK1, DK2, and Germany as a coupled system. The spread signal in DK1 depends on whether both the DK1-DE and DK2-SE interconnectors are congested simultaneously. Requires ENTSO-E cross-border flow data access.
 
 **Negative price separation.** DK1 had 281 negative-price hours in 2023 and 275 in 2024. These are driven by physical export constraints, not the merit-order relationship the model is built on. Excluding or separately modelling these hours would reduce noise.
