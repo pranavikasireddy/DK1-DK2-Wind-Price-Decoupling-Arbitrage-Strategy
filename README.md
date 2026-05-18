@@ -44,7 +44,7 @@ The rolling window (not expanding) is important: α̂ shifts with market structu
 
 Beyond the base model, we estimate how α̂ varies with market conditions:
 
-$$P_t = \beta_0 + \alpha_0 \cdot W + \alpha_1 \cdot (W \times \text{penetration}_t) + \alpha_2 \cdot (W \times \text{price\_{}high}_t) + \varepsilon_t$$
+$$P_t = \beta_0 + \alpha_0 \cdot W + \alpha_1 \cdot (W \times \text{penetration}_t) + \alpha_2 \cdot (W \times \text{price high}_t) + \varepsilon_t$$
 
 This gives a continuous, real-time estimate of the merit-order coefficient as a function of how wind-saturated the grid is and how expensive gas is — rather than a fixed coefficient re-estimated every two years.
 
@@ -135,7 +135,7 @@ Frozen DK1 parameters from the last training fold applied unchanged to DK2 (see 
 | Price above median | 1.98 | 2.23 |
 | HC (both) | 0.48 | 0.65 |
 
-The HC signal is stronger on DK2 than DK1 with frozen DK1 parameters. DK2's primary interconnector runs to Sweden (hydro-dominated) rather than Germany (gas/coal). Hydro responds more slowly to wind surplus than gas demand response, allowing spreads to deviate further before reverting — creating larger, more tradeable mispricings. The result confirms the merit-order relationship is a pan-Nordic structural feature, not a DK1-specific quirk.
+The HC signal is stronger on DK2 than DK1 with frozen DK1 parameters. DK2's primary interconnector runs to Sweden (hydro-dominated) rather than Germany (gas/coal). Hydro responds more slowly to wind surplus than gas demand response, allowing spreads to deviate further before reverting — creating larger, more tradeable mispricings. The result confirms the merit-order relationship is a pan-Danish structural feature, not a DK1-specific quirk.
 
 ### Final holdout (January–May 2026)
 
